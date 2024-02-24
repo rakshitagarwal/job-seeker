@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
+import API from "../../api";
 const JobDetails = () => {
   const { id } = useParams();
   const [job, setJob] = useState({});
@@ -10,15 +11,22 @@ const JobDetails = () => {
 
   const { isAuthorized, user } = useContext(Context);
 
+  const date = new Date(job.jobPostedOn);
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const formattedDate = `${day}-${month}-${year}`;
+
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/api/v1/job/${id}`, {
+      .get(API + `api/v1/job/${id}`, {
         withCredentials: true,
       })
       .then((res) => {
         setJob(res.data.job);
       })
       .catch((error) => {
+        console.log(error);
         navigateTo("/notfound");
       });
   }, []);
@@ -51,7 +59,7 @@ const JobDetails = () => {
             Description: <span>{job.description}</span>
           </p>
           <p>
-            Job Posted On: <span>{job.jobPostedOn}</span>
+            Job Posted On: <span>{formattedDate}</span>
           </p>
           <p>
             Salary:{" "}
