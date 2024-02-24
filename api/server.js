@@ -20,7 +20,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:4000'],
+    origin: ['http://localhost:5173', 'http://localhost:4000', 'https://job-seeker-j54r.onrender.com'],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })
